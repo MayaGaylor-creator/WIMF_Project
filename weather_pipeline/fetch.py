@@ -1,24 +1,20 @@
-# fetch.py
-# Original code from section "5.1 Fetch Weather" - moved as-is.
-# WORKER layer: talks to the outside world (the API). It needs no other
-# project file, because it only produces a plain Python dict.
-# DATA OUT: returns response_dict -> main.py passes it to validate.py
-
-from pathlib import Path
 import requests
 import json
+from pathlib import Path
 
-# 5.1 Fetch Weather
-def run_weather_fetch() -> dict:
-    url = "https://api.open-meteo.com/v1/forecast"
+code = input("Enter a barcode to fetch food data: ")
+
+def run_food_fetch(code) -> dict:
     params = {
-        "latitude": 29.4241,
-        "longitude": -98.4936,
-        "current_weather": "true",
+    "fields": "product_name,quantity,stores"
     }
+    headers = {
+        "User-Agent": "FoodInventoryProj/1.0"}
+    url = f'https://us.openfoodfacts.org/api/v2/product/{code}'
 
-    print("Requesting live weather data...")
-    response = requests.get(url, params=params)
+
+    print("Requesting live food data...")
+    response = requests.get(url, params=params, headers=headers)
 
     print(f"response:\n{response.text}")
     response_text = response.text
@@ -31,7 +27,9 @@ def run_weather_fetch() -> dict:
     print(f"Request URL: {response.url}")
     print(f"Status Code: {response.status_code}")
 
-    output_file = Path("weather_report.json")
+    output_file = Path("food_report.json")
     output_file.write_text(response.text, encoding="utf-8")
-    print(f"Saved response to {output_file.name}. Open it and find the temperature!")
+    print(f"Saved response to {output_file.name}. Open it and find the food!")
     return response_dict
+
+run_food_fetch(code)
