@@ -35,7 +35,7 @@ MYSQL_USER = "root"
 MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD", "")
 MYSQL_HOST = "localhost"
 MYSQL_PORT = 3306
-MYSQL_DB = "weather_db"
+MYSQL_DB = "WIMF"
 
 DATABASE_URL = (
     f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}"

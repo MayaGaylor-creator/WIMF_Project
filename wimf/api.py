@@ -22,8 +22,8 @@ from sqlmodel import Session, select
 # saved by main.py show up here, and records POSTed here show up in
 # print_db(). One database, two ways in.
 # ----------------------------------------------------------
-from weather_pipeline.database import engine, init_db
-from weather_pipeline.models import WeatherRecord
+from wimf.database import engine, init_db
+from wimf.models import WeatherRecord
 
 
 # ----------------------------------------------------------
