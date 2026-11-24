@@ -3,7 +3,7 @@
 # DEFINITIONS layer: describes the shape of the database table. Imports
 # nothing from the project.
 
-import datetime
+from decimal import Decimal
 from sqlmodel import Field, SQLModel
 
 # =================================================
@@ -15,14 +15,17 @@ from sqlmodel import Field, SQLModel
 # API shape (CurrentWeather above) separate from the table shape (below).
 
 
-class WeatherRecord(SQLModel, table=True):
-    __tablename__ = "weather_history"
+class GroceryItem(SQLModel, table=True):
+    __tablename__ = "GroceryItem"
 
-    # Add a database primary key id that isn't required in the API payload
-    id: int | None = Field(default=None, primary_key=True)
-    created_at: datetime.datetime = Field(default_factory=lambda: datetime.datetime.now(datetime.timezone.utc))
+    GroceryItem_id: int | None = Field(default=None, primary_key=True)
 
-    # The 3 specific fields requested (Validated and stored)
-    temperature: float  # celsius
-    windspeed: float    # km/h
-    winddirection: int  # degrees
+    GroceryItem_name: str = Field(max_length=25)
+    GroceryItem_desc: str | None = Field(default=None, max_length=125)
+    GroceryItem_price: Decimal = Field(max_digits=10, decimal_places=2)
+    GroceryItem_quantity: int
+    GroceryItem_warning: int
+    GroceryItem_max: int
+    GroceryItem_location: str = Field(max_length=10)
+    GroceryItem_stores: str | None = Field(default=None, max_length=255)
+    GroceryItem_size: str | None = Field(default=None, max_length=50)

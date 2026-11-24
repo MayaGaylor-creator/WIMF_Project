@@ -23,9 +23,9 @@ from sqlmodel import Session, select
 #                                  RECEIVES from validate.py (via main.py).
 #                                  Used in the type hint of
 #                                  save_weather_report().
-from weather_pipeline.database import engine
-from weather_pipeline.models import WeatherRecord
-from weather_pipeline.schemas import Weather # only for the type hint; not actually used
+from wimf.database import engine
+from wimf.models import WeatherRecord
+from wimf.schemas import Weather # only for the type hint; not actually used
 # ==========================================================
 # <<< ADDED FOR DATA FLOW (END)
 # ==========================================================

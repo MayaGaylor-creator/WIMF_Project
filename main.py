@@ -21,10 +21,10 @@
 # NOTE: importing storage also imports models.py, which registers the
 # WeatherRecord table. That has to happen BEFORE init_db() runs, or
 # init_db() would create no table. The import below guarantees it.
-from weather_pipeline.database import init_db
-from weather_pipeline.fetch import run_weather_fetch
-from weather_pipeline.validate import validate_weather
-from weather_pipeline.storage import save_weather_report, print_db
+from wimf.database import init_db
+from wimf.fetch import run_weather_fetch
+from wimf.validate import validate_weather
+from wimf.storage import save_weather_report, print_db
 # ==========================================================
 # <<< ADDED FOR DATA FLOW (END)
 # ==========================================================

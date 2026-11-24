@@ -14,7 +14,7 @@ from pydantic import ValidationError
 # Now Weather lives in schemas.py, so this file must import it.
 # This import is the "pipe" that brings the Weather blueprint from
 # schemas.py into this file.
-from weather_pipeline.schemas import Weather
+from wimf.schemas import Weather
 # ==========================================================
 # <<< ADDED FOR DATA FLOW (END)
 # ==========================================================
