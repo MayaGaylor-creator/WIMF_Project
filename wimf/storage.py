@@ -24,7 +24,7 @@ from sqlmodel import Session, select
 #                                  Used in the type hint of
 #                                  save_weather_report().
 from wimf.database import engine
-from wimf.models import WeatherRecord
+from wimf.models import GroceryItem
 from wimf.schemas import Weather # only for the type hint; not actually used
 # ==========================================================
 # <<< ADDED FOR DATA FLOW (END)

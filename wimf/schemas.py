@@ -1,40 +1,40 @@
-# Pydantic models: the shape of the API JSON
-# schemas.py
-# Original code from section "2. Validation Models" - moved as-is.
-# DEFINITIONS layer: describes the shape of the API JSON. Imports nothing
-# from the project, so any other module can safely depend on it.
-
-from pydantic import BaseModel
-
+from pydantic import BaseModel, Field
+from decimal import Decimal
 # =================================================
 # 2. Validation Models
 # =================================================
 
-class Current_Weather_Units(BaseModel):
-    time: str
-    interval: str
-    temperature: str
-    windspeed: str
-    winddirection: str
-    is_day: str
-    weathercode: str
+class GroceryItemCreate(BaseModel):
+    GroceryItem_name: str = Field(max_length=25)
+    GroceryItem_desc: str | None = Field(default=None, max_length=125)
+    GroceryItem_price: Decimal = Field(ge=0)
+    GroceryItem_quantity: int = Field(ge=0)
+    GroceryItem_warning: int = Field(ge=0)
+    GroceryItem_max: int = Field(gt=0)
+    GroceryItem_location: str = Field(max_length=10)
+    GroceryItem_stores: str | None = Field(default=None, max_length=255)
+    GroceryItem_size: str | None = Field(default=None, max_length=50)
 
-class Current_Weather(BaseModel):
-    temperature: float
-    windspeed: float
-    winddirection: int
-    time: str
-    interval: int
-    is_day: int
-    weathercode: int
+class GroceryItemUpdate(BaseModel):
+    GroceryItem_name: str | None = Field(default=None, max_length=25)
+    GroceryItem_desc: str | None = Field(default=None, max_length=125)
+    GroceryItem_price: Decimal | None = Field(default=None, ge=0)
+    GroceryItem_quantity: int | None = Field(default=None, ge=0)
+    GroceryItem_warning: int | None = Field(default=None, ge=0)
+    GroceryItem_max: int | None = Field(default=None, gt=0)
+    GroceryItem_location: str | None = Field(default=None, max_length=10)
+    GroceryItem_stores: str | None = Field(default=None, max_length=255)
+    GroceryItem_size: str | None = Field(default=None, max_length=50)
 
-class Weather(BaseModel):
-    latitude: float
-    longitude: float
-    generationtime_ms: float
-    utc_offset_seconds: int
-    timezone: str
-    timezone_abbreviation: str
-    elevation: float
-    current_weather_units: Current_Weather_Units
-    current_weather: Current_Weather
+class GroceryItemRead(BaseModel):
+    model_config = {"from_attributes": True}
+    GroceryItem_id: int
+    GroceryItem_name: str = Field(max_length=25)
+    GroceryItem_desc: str | None = None
+    GroceryItem_price: Decimal
+    GroceryItem_quantity: int
+    GroceryItem_warning: int
+    GroceryItem_max: int
+    GroceryItem_location: str = Field(max_length=10)
+    GroceryItem_stores: str | None = None
+    GroceryItem_size: str | None = None

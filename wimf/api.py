@@ -23,7 +23,7 @@ from sqlmodel import Session, select
 # print_db(). One database, two ways in.
 # ----------------------------------------------------------
 from wimf.database import engine, init_db
-from wimf.models import WeatherRecord
+from wimf.models import GroceryItem
 
 
 # ----------------------------------------------------------
@@ -32,10 +32,10 @@ from wimf.models import WeatherRecord
 # out on purpose, so the database and the default_factory fill them
 # in, exactly as they do when main.py saves a record.
 # ----------------------------------------------------------
-class WeatherRecordCreate(BaseModel):
-    temperature: float   # celsius
-    windspeed: float     # km/h
-    winddirection: int   # degrees
+class GroceryItemCreate(BaseModel):
+    name: str
+    quantity: int
+    price: float
 
 
 # ----------------------------------------------------------
