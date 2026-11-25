@@ -1,27 +1,7 @@
 from sqlmodel import Session, select
-
-# ==========================================================
-# >>> ADDED FOR DATA FLOW (START)
-# ==========================================================
-# The functions below use three names that used to sit in the same file.
-# Each now lives in its own module, so each must be imported here:
-#
-#   engine        <- database.py : the connection to the SQLite file.
-#                                  Both save and print use this ONE shared
-#                                  engine, so they talk to the same database.
-#   GroceryItem <- models.py   : the table blueprint. Used to build a row
-#                                  to save, and to tell select() which table
-#                                  to read.
-#   GroceryItemCreate, GroceryItemUpdate <- schemas.py  : the type of the object this module
-#                                  RECEIVES from validate.py (via main.py).
-#                                  Used in the type hint of
-#                                  save_weather_report().
 from wimf.database import engine
 from wimf.models import GroceryItem
-from wimf.schemas import GroceryItemCreate, GroceryItemUpdate # only for the type hint; not actually used
-# ==========================================================
-# <<< ADDED FOR DATA FLOW (END)
-# ==========================================================
+from wimf.schemas import GroceryItemCreate, GroceryItemUpdate 
 
 def get_all_items() -> list[GroceryItem]:
     """Return all GroceryItem rows in the database."""
