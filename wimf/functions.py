@@ -1,4 +1,4 @@
-from wimf import fetch, storage, schemas
+from wimf import fetch
 
 def AddGroceryItemFromBarcode(barcode: str):
     """Fetch grocery item information using an OpenFoodFacts barcode."""
