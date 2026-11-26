@@ -1,10 +1,6 @@
 import requests
-import json
-from pathlib import Path
 
-code = input("Enter a barcode to fetch food data: ")
-
-def run_food_fetch(code) -> dict:
+def run_food_fetch(code: str) -> dict | None:
     params = {
     "fields": "product_name,quantity,stores"
     }
@@ -15,21 +11,15 @@ def run_food_fetch(code) -> dict:
 
     print("Requesting live food data...")
     response = requests.get(url, params=params, headers=headers)
-
-    print(f"response:\n{response.text}")
-    response_text = response.text
-    response_dict = json.loads(response_text)
-
-    print(type(response_dict))
-    print("RESPONSE\n=================\n",response_dict,"\n=============================")
-
-
+    response.raise_for_status()
     print(f"Request URL: {response.url}")
     print(f"Status Code: {response.status_code}")
 
-    output_file = Path("food_report.json")
-    output_file.write_text(response.text, encoding="utf-8")
-    print(f"Saved response to {output_file.name}. Open it and find the food!")
-    return response_dict
+    response_dict = response.json()
+    return response_dict if response_dict.get('status') == 1 else None
 
-run_food_fetch(code)
+
+if __name__ == "__main__":
+    code = input("Enter a barcode to fetch food data: ")
+    result = run_food_fetch(code)
+    print(result)
