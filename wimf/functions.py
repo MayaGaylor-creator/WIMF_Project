@@ -1,3 +1,5 @@
+import csv
+from pathlib import Path
 from wimf import fetch, validate, storage
 
 def FetchGroceryItemFromBarcode(barcode: str):
@@ -149,3 +151,81 @@ def ValidateAndSaveGroceryItem(item_data: dict):
         print("Grocery item not saved.")
         return None
 
+### VIEWING ITEMS ###
+
+def ViewOneGroceryItem():
+    """Retrieve and display one grocery item by ID."""
+
+    try:
+        item_id = int(input("Enter the GroceryItem ID: "))
+    except ValueError:
+        print("Please enter a valid numeric ID.")
+        return None
+
+    item = storage.get_item_by_id(item_id)
+
+    if item is None:
+        print(f"No grocery item found with ID {item_id}.")
+        return None
+
+    print("\n========== GROCERY ITEM ==========")
+    print(f"ID:          {item.GroceryItem_id}")
+    print(f"Name:        {item.GroceryItem_name}")
+    print(f"Description: {item.GroceryItem_desc or 'N/A'}")
+    print(f"Price:       ${item.GroceryItem_price}")
+    print(f"Quantity:    {item.GroceryItem_quantity}")
+    print(f"Low warning: {item.GroceryItem_warning}")
+    print(f"Maximum:     {item.GroceryItem_max}")
+    print(f"Location:    {item.GroceryItem_location}")
+    print(f"Stores:      {item.GroceryItem_stores or 'N/A'}")
+    print(f"Package size:{item.GroceryItem_size or 'N/A'}")
+    print("==================================")
+
+    return item
+
+
+def ViewAllGroceryItems():
+    """Export the entire grocery inventory to inventory.csv."""
+
+    items = storage.get_all_items()
+
+    output_file = Path(__file__).resolve().parent.parent / "inventory.csv"
+
+    fields = [
+        "GroceryItem_id",
+        "GroceryItem_name",
+        "GroceryItem_desc",
+        "GroceryItem_price",
+        "GroceryItem_quantity",
+        "GroceryItem_warning",
+        "GroceryItem_max",
+        "GroceryItem_location",
+        "GroceryItem_stores",
+        "GroceryItem_size"
+    ]
+
+    with output_file.open("w", newline="", encoding="utf-8") as file:
+        writer = csv.DictWriter(file, fieldnames=fields)
+        writer.writeheader()
+
+        for item in items:
+            writer.writerow(item.model_dump())
+
+    print(f"\nInventory exported successfully!")
+    print(f"Items exported: {len(items)}")
+    print(f"File location: {output_file.resolve()}")
+
+    return output_file
+
+def ViewItemsDecision():
+    """Ask the user if they want to view one item or all items."""
+
+    choice = input("Do you want to view one item or all items? (one/all): ").strip().lower()
+
+    if choice == "one":
+        return ViewOneGroceryItem()
+    elif choice == "all":
+        return ViewAllGroceryItems()
+    else:
+        print("Invalid input. No items viewed.")
+        return None
