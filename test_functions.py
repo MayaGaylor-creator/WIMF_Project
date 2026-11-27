@@ -8,8 +8,8 @@ from wimf import functions, reports
 
 if __name__ == "__main__":
 ### CREATES ITEM ###
-    var = functions.AddItemDecision()
-    functions.ValidateAndSaveGroceryItem(var)
+#    var = functions.AddItemDecision()
+#    functions.ValidateAndSaveGroceryItem(var)
 ##### VIEW ITEMS ###
 #    functions.ViewItemsDecision()
 ##### EDIT ITEMS ###
@@ -17,6 +17,8 @@ if __name__ == "__main__":
 ### DELETE ITEMS ###
 #    functions.DeleteGroceryItem()
 # Report 1 Location Report
-    reports.GenerateLocationReports()
+#    reports.GenerateLocationReports()
 # Report 2 Low Report
-    reports.GenerateLowStockReport()
+#    reports.GenerateLowStockReport()
+# Grocery List Report
+    reports.GenerateShoppingList()
