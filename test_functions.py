@@ -6,4 +6,6 @@ from wimf import functions
 
 
 if __name__ == "__main__":
-    AddItemDecision()
+    var = functions.AddItemDecision()
+    print(var)
+    print(functions.ValidateAndSaveGroceryItem(var))
