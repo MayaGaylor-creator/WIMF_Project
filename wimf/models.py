@@ -20,7 +20,7 @@ class GroceryItem(SQLModel, table=True):
 
     GroceryItem_id: int | None = Field(default=None, primary_key=True)
 
-    GroceryItem_name: str = Field(max_length=25)
+    GroceryItem_name: str = Field(max_length=75)
     GroceryItem_desc: str | None = Field(default=None, max_length=125)
     GroceryItem_price: Decimal = Field(max_digits=10, decimal_places=2)
     GroceryItem_quantity: int
