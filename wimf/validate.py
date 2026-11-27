@@ -1,6 +1,6 @@
 
 from pydantic import ValidationError
-from wimf.schemas import GroceryItemCreate
+from wimf.schemas import GroceryItemCreate, GroceryItemUpdate
 
 def ValidateGroceryItem(item_data: dict) -> GroceryItemCreate | None:
     """Validate grocery item data and return a validated schema object."""
@@ -52,3 +52,38 @@ def ValidateGroceryItem(item_data: dict) -> GroceryItemCreate | None:
         return None
 
     return grocery_item
+
+def ValidateGroceryItemUpdate(current_item, changes: dict):
+    """Validate changes to an existing grocery item."""
+
+    # Validate the requested changes.
+    try:
+        validated_changes = GroceryItemUpdate.model_validate(changes)
+
+    except ValidationError as e:
+        print("\n--- Grocery Item Update Validation Failed ---")
+
+        for error in e.errors():
+            field = error["loc"][0]
+            message = error["msg"]
+            print(f"{field}: {message}")
+
+        return None
+
+    # Convert the validated changes into a dictionary.
+    validated_changes = validated_changes.model_dump(exclude_unset=True)
+
+    # Combine existing item data with the requested changes.
+    updated_data = current_item.model_dump()
+    updated_data.update(validated_changes)
+
+    # Remove the database ID; it isn't part of the Create schema.
+    updated_data.pop("GroceryItem_id", None)
+
+    # Validate the complete resulting item.
+    validated_item = ValidateGroceryItem(updated_data)
+
+    if validated_item is None:
+        return None
+
+    return GroceryItemUpdate.model_validate(validated_changes)

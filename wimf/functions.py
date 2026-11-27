@@ -232,3 +232,118 @@ def ViewItemsDecision():
     else:
         print("Invalid input. No items viewed.")
         return None
+
+############## Editing Items
+
+def EditGroceryItem():
+    """Allow the user to edit an existing grocery item."""
+
+    # Retrieve the item
+    try:
+        item_id = int(input("Enter the GroceryItem ID to edit: "))
+    except ValueError:
+        print("Please enter a valid numeric ID.")
+        return None
+
+    current_item = storage.get_item_by_id(item_id)
+
+    if current_item is None:
+        print(f"No grocery item found with ID {item_id}.")
+        return None
+
+    # Attributes available for editing
+    fields = {
+        "1": ("GroceryItem_name", "Product name"),
+        "2": ("GroceryItem_desc", "Description"),
+        "3": ("GroceryItem_price", "Price"),
+        "4": ("GroceryItem_quantity", "Current inventory quantity"),
+        "5": ("GroceryItem_warning", "Low-stock warning threshold"),
+        "6": ("GroceryItem_max", "Maximum inventory quantity"),
+        "7": ("GroceryItem_location", "Storage location"),
+        "8": ("GroceryItem_stores", "Stores"),
+        "9": ("GroceryItem_size", "Package size")
+    }
+
+    # Store requested changes here
+    changes = {}
+
+    while True:
+        print(f"\n========== EDITING: {current_item.GroceryItem_name} ==========")
+
+        for number, (field, label) in fields.items():
+            current_value = changes.get(
+                field,
+                getattr(current_item, field)
+            )
+            print(f"{number}. {label}: {current_value or 'N/A'}")
+
+        print("0. Finish editing")
+
+        choice = input("\nSelect an attribute to edit: ").strip()
+
+        if choice == "0":
+            break
+
+        if choice not in fields:
+            print("Invalid selection. Please choose a number from 0-9.")
+            continue
+
+        field, label = fields[choice]
+
+        # Handle storage location separately
+        if field == "GroceryItem_location":
+            locations = {
+                "1": "fridge",
+                "2": "frozen",
+                "3": "pantry"
+            }
+
+            print("\n1. Fridge")
+            print("2. Freezer")
+            print("3. Pantry")
+
+            location_choice = input("Select a location (1-3): ").strip()
+
+            if location_choice not in locations:
+                print("Invalid location selection.")
+                continue
+
+            new_value = locations[location_choice]
+
+        else:
+            new_value = input(f"Enter new {label.lower()}: ").strip()
+
+        # Store the requested change
+        changes[field] = new_value
+
+        print(f"{label} updated in pending changes.")
+
+    # Nothing was changed
+    if not changes:
+        print("No changes were made.")
+        return current_item
+
+    # Validate the complete updated item
+    validated_changes = validate.ValidateGroceryItemUpdate(
+        current_item,
+        changes
+    )
+
+    if validated_changes is None:
+        print("Update cancelled. No changes were saved.")
+        return None
+
+    # Save changes to the database
+    updated_item = storage.update_item(
+        item_id,
+        validated_changes
+    )
+
+    if updated_item is None:
+        print("Failed to update grocery item.")
+        return None
+
+    print("\nGrocery item updated successfully!")
+    return updated_item
+
+#### Delete items
