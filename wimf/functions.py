@@ -134,22 +134,25 @@ def AddItemDecision():
 
 def ValidateAndSaveGroceryItem(item_data: dict):
     """Validate the grocery item data and save it to the database."""
-    print("\n--- Grocery Item Validation ---")
-    print(item_data)
-    choice = input("Do you want to save this grocery item to the database? (Y/N): ").strip().lower()
-    validated_item = validate.ValidateGroceryItem(item_data)
 
-    if validated_item is None:
-        print("Failed to create grocery item.")
-        return None
+    if item_data is not None:
+        print("\n--- Grocery Item Validation ---")
+        print(item_data)
+        choice = input("Do you want to save this grocery item to the database? (Y/N): ").strip().lower()
 
-    if choice == "y":
-        storage.create_item(validated_item)
-        print("Grocery item created successfully.")
-        return validated_item
-    else:
-        print("Grocery item not saved.")
-        return None
+        validated_item = validate.ValidateGroceryItem(item_data)
+
+        if validated_item is None:
+            print("Failed to create grocery item.")
+            return None
+
+        if choice == "y":
+            storage.create_item(validated_item)
+            print("Grocery item created successfully.")
+            return validated_item
+        else:
+            print("Grocery item not saved.")
+            return None
 
 ### VIEWING ITEMS ###
 
