@@ -347,3 +347,57 @@ def EditGroceryItem():
     return updated_item
 
 #### Delete items
+def DeleteGroceryItem():
+    """Delete an existing grocery item after user confirmation."""
+
+    # Retrieve the item
+    try:
+        item_id = int(input("Enter the GroceryItem ID to delete: "))
+    except ValueError:
+        print("Please enter a valid numeric ID.")
+        return None
+
+    item = storage.get_item_by_id(item_id)
+
+    if item is None:
+        print(f"No grocery item found with ID {item_id}.")
+        return None
+
+    # Display item information
+    print("\n========== GROCERY ITEM ==========")
+    print(f"ID:          {item.GroceryItem_id}")
+    print(f"Name:        {item.GroceryItem_name}")
+    print(f"Description: {item.GroceryItem_desc or 'N/A'}")
+    print(f"Price:       ${item.GroceryItem_price}")
+    print(f"Quantity:    {item.GroceryItem_quantity}")
+    print(f"Low warning: {item.GroceryItem_warning}")
+    print(f"Maximum:     {item.GroceryItem_max}")
+    print(f"Location:    {item.GroceryItem_location}")
+    print(f"Stores:      {item.GroceryItem_stores or 'N/A'}")
+    print(f"Package size:{item.GroceryItem_size or 'N/A'}")
+    print("==================================")
+
+    # Request confirmation
+    print("\nAre you sure you want to delete this item?")
+    print("1. Yes, delete item")
+    print("2. No, cancel")
+
+    choice = input("Select an option (1-2): ").strip()
+
+    if choice == "1":
+        deleted = storage.delete_item(item_id)
+
+        if deleted:
+            print(f"\n{item.GroceryItem_name} successfully deleted.")
+            return True
+
+        print("Failed to delete grocery item.")
+        return False
+
+    elif choice == "2":
+        print("Deletion cancelled.")
+        return False
+
+    else:
+        print("Invalid selection. Deletion cancelled.")
+        return False

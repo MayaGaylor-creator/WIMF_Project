@@ -15,4 +15,4 @@ if __name__ == "__main__":
 ##### EDIT ITEMS ###
 #    functions.EditGroceryItem()
 ### DELETE ITEMS ###
-    functions.DeleteGroceryItem()
+#    functions.DeleteGroceryItem()
