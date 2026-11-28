@@ -5,7 +5,7 @@ from decimal import Decimal
 # =================================================
 
 class GroceryItemCreate(BaseModel):
-    GroceryItem_name: str = Field(max_length=25)
+    GroceryItem_name: str = Field(max_length=75)
     GroceryItem_desc: str | None = Field(default=None, max_length=125)
     GroceryItem_price: Decimal = Field(ge=0)
     GroceryItem_quantity: int = Field(ge=0)
@@ -16,7 +16,7 @@ class GroceryItemCreate(BaseModel):
     GroceryItem_size: str | None = Field(default=None, max_length=50)
 
 class GroceryItemUpdate(BaseModel):
-    GroceryItem_name: str | None = Field(default=None, max_length=25)
+    GroceryItem_name: str | None = Field(default=None, max_length=75)
     GroceryItem_desc: str | None = Field(default=None, max_length=125)
     GroceryItem_price: Decimal | None = Field(default=None, ge=0)
     GroceryItem_quantity: int | None = Field(default=None, ge=0)
@@ -29,7 +29,7 @@ class GroceryItemUpdate(BaseModel):
 class GroceryItemRead(BaseModel):
     model_config = {"from_attributes": True}
     GroceryItem_id: int
-    GroceryItem_name: str = Field(max_length=25)
+    GroceryItem_name: str = Field(max_length=75)
     GroceryItem_desc: str | None = None
     GroceryItem_price: Decimal
     GroceryItem_quantity: int
